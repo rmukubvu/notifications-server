@@ -1,0 +1,59 @@
+server:
+  port: 8089
+spring:
+  sendgrid:
+    api-key: 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
+  data:
+    mongodb:
+      host: localhost
+      database: notifications-hh
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 2000
+  cloud:
+    stream:
+      default:
+        contentType: application/json
+      bindings:
+        bindings:
+          input:
+            binder: local_rabbit_email
+            destination: process_email
+            group: sendgrid
+            consumer:
+              bindQueue: false
+              declareExchange: false
+              queueNameGroupOnly: true
+          input1:
+            binder: local_rabbit_sms
+            destination: process_sms
+            group: twilio
+            consumer:
+              bindQueue: false
+              declareExchange: false
+              queueNameGroupOnly: true
+      binders:
+        local_rabbit_email:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: localhost
+                port: 5672
+                username: guest
+                password: guest
+                virtual-host: /
+          local_rabbit_sms:
+            type: rabbit
+            environment:
+              spring:
+                rabbitmq:
+                  host: localhost
+                  port: 5672
+                  username: guest
+                  password: guest
+                  virtual-host: /
+clickatell:
+  sms:
+    api-key: zr8cyHDOSQKGSi-0XJjiIA==
