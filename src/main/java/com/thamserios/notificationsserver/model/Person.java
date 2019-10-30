@@ -13,7 +13,10 @@ public class Person implements Serializable {
     private String dateOfBirth;
     private String cellPhone;
     private String email;
+    private String countryOfOrigin;
     private String countryCode;
+    private boolean blocked;
+    private int buyerOrSeller;
 
     public Person() {
     }

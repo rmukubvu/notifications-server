@@ -1,19 +1,24 @@
 package com.thamserios.notificationsserver.services;
 
-import com.thamserios.notificationsserver.model.Person;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thamserios.notificationsserver.model.TMessage;
 import com.thamserios.notificationsserver.model.User;
 import com.thamserios.notificationsserver.processor.NotificationProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.data.redis.connection.Message;
+import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.Executors;
 
 @Service
 @EnableBinding(NotificationProcessor.class)
-public class NotificationBox {
+public class NotificationSubscriber implements MessageListener {
+
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private TwilioSmsService twilioSmsService;
@@ -39,5 +44,17 @@ public class NotificationBox {
             model.setCountryCode(user.getCountryCode());
             twilioSmsService.sendSms(model);
         });
+    }
+
+    @Override
+    public void onMessage(Message message, byte[] bytes) {
+        try {
+            TMessage smsMessage = objectMapper.readValue(message.toString(), TMessage.class);
+            Executors.newSingleThreadExecutor().execute(() -> {
+                twilioSmsService.sendSms(smsMessage);
+            });
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 }
