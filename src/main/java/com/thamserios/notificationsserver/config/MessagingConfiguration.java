@@ -12,6 +12,10 @@ import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 @Configuration
 public class MessagingConfiguration {
 
+    public MessagingConfiguration(final NotificationSubscriber messageSubscriber) {
+        this.messageSubscriber = messageSubscriber;
+    }
+
     @Bean
     JedisConnectionFactory jedisConnectionFactory() {
         return new JedisConnectionFactory();
@@ -22,7 +26,7 @@ public class MessagingConfiguration {
         return new ChannelTopic("payments");
     }
 
-    @Autowired
+    final
     NotificationSubscriber messageSubscriber;
 
     @Bean

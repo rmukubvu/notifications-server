@@ -9,8 +9,8 @@ import java.util.Date;
 
 public class TwilioClientSingleton {
     private static TwilioClientSingleton instance;
-    private final String ACCOUNT_SID = "AC4cfb2d24bb0aab19249af1ad33cecdea";
-    private static final String AUTH_TOKEN = "a5e460406248767cd0d8c32e6ea9560b";
+    private final String ACCOUNT_SID = "AC06dc812b689948eff7b484b7ad3a3548";
+    private static final String AUTH_TOKEN = "8ade518cea360d0e41547dd8529cf2ef";
 
     private TwilioClientSingleton(){
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);

@@ -28,7 +28,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfo(
                 "Notifications REST API",
-                "SMS , Email and Slack notification services for house hold.",
+                "SMS , Email and Slack notification services for Amakhosi.",
                 "API TOS",
                 "Terms of service",
                 new Contact("Developers@Thamserios", "www.thamserios.com", "developers@thamserios.com"),

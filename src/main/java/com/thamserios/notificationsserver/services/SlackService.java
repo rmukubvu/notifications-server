@@ -13,14 +13,18 @@ import java.util.concurrent.Executors;
 @Service
 public class SlackService {
 
+    private final NotificationResponseRepository notificationResponseRepository;
+
     @Autowired
-    private NotificationResponseRepository notificationResponseRepository;
+    public SlackService(final NotificationResponseRepository notificationResponseRepository) {
+        this.notificationResponseRepository = notificationResponseRepository;
+    }
 
     public NotificationResponse sendSlackMessage(String message){
-        var model = new NotificationResponse("notification-service", "house-hold-support", message, new Date(), "Queued", "SLACK");
+        var model = new NotificationResponse("notification-service", "amakhosi-support", message, new Date(), "Queued", "SLACK");
         Executors.newSingleThreadExecutor().execute(() -> {
             SlackMessage slackMessage = SlackMessage.builder()
-                    .channel("house-hold-support")
+                    .channel("amakhosi-support")
                     .username("notifier")
                     .text(message)
                     .icon_emoji(":twice:")

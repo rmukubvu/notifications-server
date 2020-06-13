@@ -17,20 +17,27 @@ import java.util.concurrent.Executors;
 @Service
 public class WelcomeService {
 
-    @Autowired
+    final
     MessagingLogsRepository messagingLogsRepository;
 
-    @Autowired
+    final
     NotificationResponseRepository notificationResponseRepository;
 
-    @Autowired
+    final
     SendGridEmailService sendGridEmailService;
 
+    @Autowired
+    public WelcomeService(final MessagingLogsRepository messagingLogsRepository, final NotificationResponseRepository notificationResponseRepository, final SendGridEmailService sendGridEmailService) {
+        this.messagingLogsRepository = messagingLogsRepository;
+        this.notificationResponseRepository = notificationResponseRepository;
+        this.sendGridEmailService = sendGridEmailService;
+    }
+
     public NotificationResponse sendWelcomeMessage(Person person) {
-        var model = new NotificationResponse("welcome@household.co.za", person.getEmail(), "House Hold Login Details", new Date(), "Queued", "SENDGRID");
+        var model = new NotificationResponse("welcome@amakhosi.co.za", person.getEmail(), "Amakhosi Login Details", new Date(), "Queued", "SENDGRID");
         Executors.newSingleThreadExecutor().execute(() -> {
             var html = getHtmlView(person);
-            sendEmailNotification(person.getCellPhone(), person.getEmail(), "House Hold Login Details", html);
+            sendEmailNotification(person.getCellPhone(), person.getEmail(), "Amakhosi Login Details", html);
             notificationResponseRepository.save(model);
         });
         return model;
@@ -50,7 +57,7 @@ public class WelcomeService {
     }
 
     private void sendEmailNotification(String userId,String destination,String subject,String body) {
-        String response = sendGridEmailService.sendHTML("welcome@household.co.za", destination, subject, body);
+        String response = sendGridEmailService.sendHTML("welcome@amakhosi.co.za", destination, subject, body);
         messagingLogsRepository.save(new MessagingLog(userId, body, MessagingTypes.EMAIL, response));
     }
 }

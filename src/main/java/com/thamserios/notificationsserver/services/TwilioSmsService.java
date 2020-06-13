@@ -14,13 +14,14 @@ import java.util.concurrent.Executors;
 @Service
 public class TwilioSmsService implements SmsService {
     private TwilioClientSingleton routing;
-    private final String twilioNumber = "441452260189";
+    private final String twilioNumber = "15045798139";
+
+    private final NotificationResponseRepository notificationResponseRepository;
 
     @Autowired
-    private NotificationResponseRepository notificationResponseRepository;
-
-    public TwilioSmsService() {
+    public TwilioSmsService(final NotificationResponseRepository notificationResponseRepository) {
         this.routing = TwilioClientSingleton.getInstance();;
+        this.notificationResponseRepository = notificationResponseRepository;
     }
 
     @Override

@@ -20,8 +20,11 @@ public class NotificationSubscriber implements MessageListener {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    @Autowired
-    private TwilioSmsService twilioSmsService;
+    private final TwilioSmsService twilioSmsService;
+
+    public NotificationSubscriber(final TwilioSmsService twilioSmsService) {
+        this.twilioSmsService = twilioSmsService;
+    }
 
     @StreamListener(NotificationProcessor.SMS_INPUT)
     public void processMessages(TMessage message){
@@ -33,10 +36,10 @@ public class NotificationSubscriber implements MessageListener {
     @StreamListener(NotificationProcessor.EMAIL)
     public void processMessages(User user){
         Executors.newSingleThreadExecutor().execute(() -> {
-            var message = String.format("Welcome to House Hold\n" +
+            var message = String.format("Welcome to Amakhosi\n" +
                     "You login with your cellphone number\n" +
-                    "with the following pin: %s\n" +
-                    "add +44 161 850 7453 to your contacts.",user.getPassword());
+                    "%s with the following pin: %s\n",
+                     user.getUserName(),user.getPassword());
             var model = new TMessage();
             model.setReceiver(user.getUserName());
             model.setSender("");
