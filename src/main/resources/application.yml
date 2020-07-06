@@ -2,7 +2,7 @@ server:
   port: 8089
 spring:
   sendgrid:
-    api-key: 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
+    api-key: 
   data:
     mongodb:
       host: localhost
@@ -56,4 +56,4 @@ spring:
                   virtual-host: /
 clickatell:
   sms:
-    api-key: zr8cyHDOSQKGSi-0XJjiIA==
+    api-key: 
